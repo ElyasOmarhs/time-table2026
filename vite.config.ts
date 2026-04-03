@@ -20,6 +20,11 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
+      },
+      build: {
+        // دا نوې برخه فونټونه په مستقیم ډول په کوډ کې ننباسي
+        // ترڅو په آفلاین EXE حالت کې فونټونه په سمه توګه کار وکړي
+        assetsInlineLimit: 1000000, 
       }
     };
 });
