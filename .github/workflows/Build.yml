@@ -67,8 +67,11 @@ jobs:
       - name: Install Electron
         run: npm install electron electron-builder --save-dev
 
-      - name: Build EXE File
-        run: npx electron-builder --win -c electron-builder.yml
+      # دلته مې د خپرولو (Publish) برخه او د ګیټ‌هاب کیلي ور اضافه کړه
+      - name: Build and Publish EXE
+        run: npx electron-builder --win -c electron-builder.yml --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload EXE
         uses: actions/upload-artifact@v4
