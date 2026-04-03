@@ -43,10 +43,10 @@ jobs:
           app.whenReady().then(createWindow);
           app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
           "@
-          Set-Content -Path main.js -Value $mainJs
+          Set-Content -Path main.cjs -Value $mainJs
 
           $pkg = Get-Content package.json | ConvertFrom-Json
-          $pkg | Add-Member -MemberType NoteProperty -Name "main" -Value "main.js" -Force
+          $pkg | Add-Member -MemberType NoteProperty -Name "main" -Value "main.cjs" -Force
           $pkg | ConvertTo-Json -Depth 10 | Set-Content package.json
 
           $builderConfig = @"
@@ -56,10 +56,12 @@ jobs:
             output: release
           files:
             - dist/**/*
-            - main.js
+            - main.cjs
             - package.json
           win:
-            target: nsis
+            target:
+              - nsis
+              - portable
             icon: icon.ico
           "@
           Set-Content -Path electron-builder.yml -Value $builderConfig
@@ -67,7 +69,6 @@ jobs:
       - name: Install Electron
         run: npm install electron electron-builder --save-dev
 
-      # دلته مې د خپرولو (Publish) برخه او د ګیټ‌هاب کیلي ور اضافه کړه
       - name: Build and Publish EXE
         run: npx electron-builder --win -c electron-builder.yml --publish always
         env:
