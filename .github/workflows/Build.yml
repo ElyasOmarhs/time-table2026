@@ -46,7 +46,7 @@ jobs:
           Set-Content -Path main.js -Value $mainJs
 
           $pkg = Get-Content package.json | ConvertFrom-Json
-          $pkg.main = "main.js"
+          $pkg | Add-Member -MemberType NoteProperty -Name "main" -Value "main.js" -Force
           $pkg | ConvertTo-Json -Depth 10 | Set-Content package.json
 
           $builderConfig = @"
